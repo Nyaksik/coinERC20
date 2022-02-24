@@ -1,12 +1,12 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 
-contract CoinERC20 {
+contract CoinERC20x0 {
     address private _owner;
-    string private _name;
-    string private _symbol;
-    uint private _decimals;
-    uint private _totalSupply;
+    string public name;
+    string public symbol;
+    uint public decimals;
+    uint public totalSupply;
 
     mapping(address => uint) private _balances;
     mapping(address => mapping(address => uint)) private _allowances;
@@ -16,9 +16,9 @@ contract CoinERC20 {
 
     constructor() {
         _owner = msg.sender;
-        _name = "NyanNyanCoin";
-        _symbol = "NNC";
-        _decimals = 18;
+        name = "NyanNyanCoin";
+        symbol = "NNC";
+        decimals = 18;
     }
 
     modifier _onlyOwner() {
@@ -26,27 +26,11 @@ contract CoinERC20 {
         _;
     }
 
-    function name() external view returns(string memory) {
-        return _name;
-    }
-
-    function symbol() external view returns(string memory) {
-        return _symbol;
-    }
-
-    function decimals() external view returns(uint) {
-        return _decimals;
-    }
-
-    function totalSupply() external view returns(uint) {
-        return _totalSupply;
-    }
-
-    function balanceOf(address account) external view returns(uint) {
+    function balanceOf(address account) public view returns(uint) {
         return _balances[account];
     }
 
-    function allowance(address owner, address spender) external view returns(uint) {
+    function allowance(address owner, address spender) public view returns(uint) {
         return _allowances[owner][spender];
     }
 
@@ -65,8 +49,9 @@ contract CoinERC20 {
     }
 
     function transferFrom(address from, address to, uint amount) external returns(bool success) {
-        uint _currentAllowance = this.allowance(from, msg.sender);
+        uint _currentAllowance = allowance(from, msg.sender);
 
+        require(allowance(from, msg.sender) != 0, "Unverified address");
         require(_currentAllowance >= amount, "The amount exceeds the allowance");
 
         _transfer(from, to, amount);
@@ -82,9 +67,9 @@ contract CoinERC20 {
     }
 
     function increaseAllowance(address spender, uint amount) external returns(bool success) {
-        uint _currentAllowance = this.allowance(msg.sender, spender);
+        uint _currentAllowance = allowance(msg.sender, spender);
 
-        require(spender != address(0), "Cannot be the zero address");
+        require(spender != address(0x0), "Cannot be the zero address");
 
         _approve(msg.sender, spender, _currentAllowance + amount);
 
@@ -92,9 +77,9 @@ contract CoinERC20 {
     }
 
     function decreaseAllowance(address spender, uint amount) external returns(bool success) {
-        uint _currentAllowance = this.allowance(msg.sender, spender);
+        uint _currentAllowance = allowance(msg.sender, spender);
 
-        require(spender != address(0), "Cannot be the zero address");
+        require(spender != address(0x0), "Cannot be the zero address");
         require(_currentAllowance >= amount, "The amount exceeds the allowance");
         
         _approve(msg.sender, spender, _currentAllowance - amount);
@@ -105,28 +90,28 @@ contract CoinERC20 {
     // Helper function
 
     function _mint(address account, uint amount) internal {
-        require(account != address(0), "Cannot be the zero address");
+        require(account != address(0x0), "Cannot be the zero address");
 
-        _totalSupply += amount;
+        totalSupply += amount;
         _balances[account] += amount;
 
-        emit Transfer(address(0), account, amount);
+        emit Transfer(address(0x0), account, amount);
     }
 
     function _burn(address account, uint amount) internal {
-        require(account != address(0), "Cannot be the zero address");
-        require(this.balanceOf(account) >= amount, "Must have at least amount tokens");
+        require(account != address(0x0), "Cannot be the zero address");
+        require(balanceOf(account) >= amount, "Must have at least amount tokens");
 
-        _totalSupply -= amount;
+        totalSupply -= amount;
         _balances[account] -= amount;
 
-        emit Transfer(account, address(0), amount);
+        emit Transfer(account, address(0x0), amount);
     }
 
     function _transfer(address from, address to, uint amount) internal {
-        require(from != address(0), "Cannot be the zero address");
-        require(to != address(0), "Cannot be the zero address");
-        require(this.balanceOf(from) >= amount, "Must have at least amount tokens");
+        require(from != address(0x0), "Cannot be the zero address");
+        require(to != address(0x0), "Cannot be the zero address");
+        require(balanceOf(from) >= amount, "Must have at least amount tokens");
 
         _balances[from] -= amount;
         _balances[to] += amount;
@@ -135,8 +120,8 @@ contract CoinERC20 {
     }
 
     function _approve(address owner, address spender, uint amount) internal {
-        require(owner != address(0), "Cannot be the zero address");
-        require(spender != address(0), "Cannot be the zero address");
+        require(owner != address(0x0), "Cannot be the zero address");
+        require(spender != address(0x0), "Cannot be the zero address");
 
         _allowances[owner][spender] = amount;
 
