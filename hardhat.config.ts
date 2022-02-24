@@ -6,6 +6,7 @@ import "@nomiclabs/hardhat-waffle";
 import "@typechain/hardhat";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
+import "./task/task.ts";
 
 dotenv.config();
 
@@ -15,7 +16,10 @@ const config: HardhatUserConfig = {
     rinkeby: {
       url: `https://eth-rinkeby.alchemyapi.io/v2/${process.env.ALCHEMY_PRIVATE_KEY}`,
       accounts:
-        process.env.METAMASK_PRIVATE_KEY !== undefined ? [process.env.METAMASK_PRIVATE_KEY] : [],
+        process.env.METAMASK_OWNER_PRIVATE_KEY !== undefined ? [
+          process.env.METAMASK_OWNER_PRIVATE_KEY as string,
+          process.env.METAMASK_PRIVATE_KEY as string
+        ] : [],
     },
   },
   gasReporter: {

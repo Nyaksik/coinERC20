@@ -1,5 +1,6 @@
 import { artifacts, ethers, waffle } from "hardhat";
 import { Artifact } from "hardhat/types"
+
 import allowance from "./allowance";
 import totalSupply from "./totalSupply";
 import transfer from "./transfer";
@@ -19,4 +20,4 @@ describe("Contract testing", function () {
   totalSupply();
   allowance();
   transfer();
-})
+});
